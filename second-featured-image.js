@@ -25,9 +25,11 @@ jQuery(document).ready(function($){
      * deletes corresponding slide from .meta-thumbs and from the #msb-images input
      */
     function remove_meta_image(){
-        var thumbArray = get_meta_images();
+        //var thumbArray = get_meta_images();
         $('#sfi-thumbnail').html("");
         $('#sfi-image').val("");
+        $('#sfi-remove-image').addClass('hide');
+        $('#sfi-set-image').removeClass('hide');
     }
  
     /*
@@ -35,7 +37,7 @@ jQuery(document).ready(function($){
      * when the user makes their selections
      * Runs when Add Slide button is clicked
      */
-    $('#sfi-image-button').click(function(e){
+    $('#sfi-set-image').click(function(e){
  
         // Prevents the default action from occuring.
         e.preventDefault();
@@ -66,11 +68,27 @@ jQuery(document).ready(function($){
 
             // Sends the attachment URL to our custom image input field.
             $('#sfi-image').val(media_attachment.url);
+
+            // hide / show appropriate links
+            $('#sfi-remove-image').removeClass('hide');
+            $('#sfi-set-image').addClass('hide');
+
         });
  
         // Opens the media library frame.
         meta_image_frame.open();
     });
+
+    $('#sfi-remove-image').click(function(e){
+ 
+        // Prevents the default action from occuring.
+        e.preventDefault();
+
+
+        remove_meta_image();
+
+
+      });
     
 
 /* -------------------------------------------------------------------------

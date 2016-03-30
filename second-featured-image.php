@@ -14,7 +14,7 @@ Author URI: http://cypresscreative.com
  * Adds a meta box to the post editing screen
  */
 function sfi_custom_meta() {
-    add_meta_box( 'sfi_meta', __( 'App Featured Image', 'sfi-textdomain' ), 'sfi_meta_callback' );
+    add_meta_box( 'sfi_meta', __( 'App Featured Image', 'sfi-textdomain' ), 'sfi_meta_callback', '', 'side' );
 }
 add_action( 'add_meta_boxes', 'sfi_custom_meta' );
 
@@ -25,10 +25,8 @@ add_action( 'add_meta_boxes', 'sfi_custom_meta' );
 function sfi_meta_callback( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'sfi_nonce' );
     $sfi_stored_meta = get_post_meta( $post->ID );
-    ?>
- 
 
-    <?php 
+
     if ( isset ( $sfi_stored_meta['sfi-image'] ) ) : ?>
         
         <div id="sfi-thumbnail">
@@ -39,17 +37,10 @@ function sfi_meta_callback( $post ) {
     endif;
     ?>
 
-
-    
-
-
-
-
+    <input type="hidden" name="sfi-image" id="sfi-image" value="<?php if ( isset ( $sfi_stored_meta['sfi-image'] ) ) echo $sfi_stored_meta['sfi-image'][0]; ?>" />
 	<p>
-        
-	    <input type="text" name="sfi-image" id="sfi-image" value="<?php if ( isset ( $sfi_stored_meta['sfi-image'] ) ) echo $sfi_stored_meta['sfi-image'][0]; ?>" />
-
-	    <input type="button" id="sfi-image-button" class="button" value="<?php _e( 'Add Slide', 'sfi-textdomain' )?>" />
+        <a href="#" id="sfi-remove-image" class="<?php if ( empty ( $sfi_stored_meta['sfi-image'] ) ) echo 'hide'; ?>" >Remove app featured image</a>
+        <a href="#" id="sfi-set-image" class="<?php if ( isset ( $sfi_stored_meta['sfi-image'] ) ) echo 'hide'; ?>">Set app featured image</a>
 	</p>
  
     <?php
