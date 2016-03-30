@@ -27,11 +27,29 @@ function sfi_meta_callback( $post ) {
     $sfi_stored_meta = get_post_meta( $post->ID );
     ?>
  
-    <ul class="meta-thumbs"></ul>
+
+    <?php 
+    if ( isset ( $sfi_stored_meta['sfi-image'] ) ) : ?>
+        
+        <div id="sfi-thumbnail">
+            <img id="sfi-thumbnail" src="<?php echo $sfi_stored_meta['sfi-image'][0]; ?>" class="attachment-post-thumbnail" ></a>
+        </div>
+
+    <?php
+    endif;
+    ?>
+
+
+    
+
+
+
 
 	<p>
-	    <input type="hidden" name="sfi-images" id="sfi-images" value="<?php if ( isset ( $sfi_stored_meta['sfi-images'] ) ) echo $sfi_stored_meta['sfi-images'][0]; ?>" />
-	    <input type="button" id="sfi-images-button" class="button" value="<?php _e( 'Add Slide', 'sfi-textdomain' )?>" />
+        
+	    <input type="text" name="sfi-image" id="sfi-image" value="<?php if ( isset ( $sfi_stored_meta['sfi-image'] ) ) echo $sfi_stored_meta['sfi-image'][0]; ?>" />
+
+	    <input type="button" id="sfi-image-button" class="button" value="<?php _e( 'Add Slide', 'sfi-textdomain' )?>" />
 	</p>
  
     <?php
@@ -54,8 +72,8 @@ function sfiSave( $post_id ) {
     }
 
 	// Checks for input and saves if needed
-	if( isset( $_POST[ 'sfi-images' ] ) ) {
-	    update_post_meta( $post_id, 'sfi-images', $_POST[ 'sfi-images' ] );
+	if( isset( $_POST[ 'sfi-image' ] ) ) {
+	    update_post_meta( $post_id, 'sfi-image', $_POST[ 'sfi-image' ] );
 	}
 
  
@@ -85,34 +103,30 @@ function sfiEnqueue() {
         wp_enqueue_media();
  
         // Registers and enqueues the required javascript.
-        wp_register_script( 'multi-slide-box', plugin_dir_url( __FILE__ ) . 'multi-slide-box.js', array( 'jquery' ) );
-        wp_localize_script( 'multi-slide-box', 'meta_image',
+        wp_register_script( 'second-featured-image', plugin_dir_url( __FILE__ ) . 'second-featured-image.js', array( 'jquery' ) );
+        wp_localize_script( 'second-featured-image', 'meta_image',
             array(
                 'title' => __( 'Choose or Upload an Image', 'sfi-textdomain' ),
                 'button' => __( 'Use this image', 'sfi-textdomain' ),
             )
         );
         
-        wp_enqueue_script( 'jquery-ui-sortable' );
-        wp_enqueue_script( 'multi-slide-box' );
+        wp_enqueue_script( 'second-featured-image' );
     }
 }
 add_action( 'admin_enqueue_scripts', 'sfiEnqueue' );
 
 
 
-add_action( 'init', 'addThumbSize' );
-function addThumbSize() {
-    add_image_size( 'admin-thumb', 120, 120, true ); //admin thumb
-}
+
 
 /**
- * returns an array of the images stored in the sfi-images metabox
+ * returns an array of the images stored in the sfi-image metabox
  * args: post_id
  */
-function sfiGetSlides( $post_id ){
-    $sfi_slides = get_post_meta( $post_id, 'sfi-images');
-    return explode(',', $sfi_slides[0]);
+function sfiGetImage( $post_id ){
+    $sfi_image = get_post_meta( $post_id, 'sfi-image');
+    return $sfi_image[0];
 }
 
 ?>
