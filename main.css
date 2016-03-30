@@ -1,0 +1,6 @@
+#msb_meta{overflow: hidden; padding-bottom: 1em;}
+#msb_meta p{clear: both;}
+.meta-thumbs ul, .meta-thumbs li{margin:0; padding: 0; list-style: none;}
+.meta-thumbs li{float:left; padding:4px; margin-right:6px; margin-bottom:6px; border:solid #E5E5E5 1px; text-align: center;}
+.meta-thumbs a{font-size:10px; line-height:16px; color:#a00; text-decoration: none;}
+.meta-thumbs img{cursor: move;}
