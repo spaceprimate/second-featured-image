@@ -1,41 +1,14 @@
 /*
- * Attaches the image uploader to the input field
- * 
+ * calls the wordpress media manager and saves image url to input field
  */
 jQuery(document).ready(function($){
 
     // Instantiates the variable that holds the media library frame.
     var meta_image_frame;
 
-
-
-
-
-    /*
-     * returns the contens of #msb-images input as a javascript array
-     */
-    function get_meta_images(){
-        return $("#msb-images").val().split(',');
-    }
-
-
-
-
-    /*
-     * deletes corresponding slide from .meta-thumbs and from the #msb-images input
-     */
-    function remove_meta_image(){
-        //var thumbArray = get_meta_images();
-        $('#sfi-thumbnail').html("");
-        $('#sfi-image').val("");
-        $('#sfi-remove-image').addClass('hide');
-        $('#sfi-set-image').removeClass('hide');
-    }
- 
-    /*
+    /**
      * Opens the wordpress media manager frame and sets actions for 
      * when the user makes their selections
-     * Runs when Add Slide button is clicked
      */
     $('#sfi-set-image').click(function(e){
  
@@ -48,14 +21,12 @@ jQuery(document).ready(function($){
             return;
         }
 
-
         // Sets up the media library frame
         meta_image_frame = wp.media.frames.meta_image_frame = wp.media({
             title: meta_image.title,
             button: { text:  meta_image.button },
             library: { type: 'image' }
         });
-
 
         // Runs when an image is selected.
         meta_image_frame.on('select', function(){
@@ -72,36 +43,24 @@ jQuery(document).ready(function($){
             // hide / show appropriate links
             $('#sfi-remove-image').removeClass('hide');
             $('#sfi-set-image').addClass('hide');
-
         });
  
         // Opens the media library frame.
         meta_image_frame.open();
     });
 
-    $('#sfi-remove-image').click(function(e){
- 
-        // Prevents the default action from occuring.
-        e.preventDefault();
-
-
-        remove_meta_image();
-
-
-      });
-    
-
-/* -------------------------------------------------------------------------
---  Display initial state and set listeners
-------------------------------------------------------------------------- */
-
-    /*
-     * calls remove_meta_image
-     */
-    $(".meta-thumbs a.del").live('click', function(e){
-        e.preventDefault();
-        remove_meta_image();
-    });
-
+  /**
+  * removes thumbnail and displays "add new" link
+  */
+  function remove_meta_image(){
+    $('#sfi-thumbnail').html("");
+    $('#sfi-image').val("");
+    $('#sfi-remove-image').addClass('hide');
+    $('#sfi-set-image').removeClass('hide');
+  }
+  $('#sfi-remove-image').click(function(e){
+    e.preventDefault();
+    remove_meta_image();
+  });
 
 });

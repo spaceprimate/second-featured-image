@@ -5,8 +5,11 @@ Plugin Name: DTG Second Featured Image
 Plugin URI: http://cypresscreative.com
 Description: Creates an additional meta-box for creating an additional featured image
 Author: Cypress Creative
-Version: 0.2.0
+Version: 1.0.0
 Author URI: http://cypresscreative.com
+
+Notes: 
+to retrieve the url of the featured image, call sfiGetImage( postID )
 */
 
 
@@ -26,13 +29,10 @@ function sfi_meta_callback( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'sfi_nonce' );
     $sfi_stored_meta = get_post_meta( $post->ID );
 
-
     if ( isset ( $sfi_stored_meta['sfi-image'] ) ) : ?>
-        
         <div id="sfi-thumbnail">
             <img id="sfi-thumbnail" src="<?php echo $sfi_stored_meta['sfi-image'][0]; ?>" class="attachment-post-thumbnail" ></a>
         </div>
-
     <?php
     endif;
     ?>
@@ -42,8 +42,7 @@ function sfi_meta_callback( $post ) {
         <a href="#" id="sfi-remove-image" class="<?php if ( empty ( $sfi_stored_meta['sfi-image'] ) ) echo 'hide'; ?>" >Remove app featured image</a>
         <a href="#" id="sfi-set-image" class="<?php if ( isset ( $sfi_stored_meta['sfi-image'] ) ) echo 'hide'; ?>">Set app featured image</a>
 	</p>
- 
-    <?php
+<?php
 }
 
 
@@ -67,10 +66,8 @@ function sfiSave( $post_id ) {
 	    update_post_meta( $post_id, 'sfi-image', $_POST[ 'sfi-image' ] );
 	}
 
- 
 }
 add_action( 'save_post', 'sfiSave' );
-
 
 /**
  * Adds the meta box stylesheet when appropriate
@@ -83,7 +80,6 @@ function sfi_admin_styles(){
     }
 }
 add_action( 'admin_print_styles', 'sfi_admin_styles' );
-
 
 /**
  * Loads the image management javascript
@@ -107,12 +103,8 @@ function sfiEnqueue() {
 }
 add_action( 'admin_enqueue_scripts', 'sfiEnqueue' );
 
-
-
-
-
 /**
- * returns an array of the images stored in the sfi-image metabox
+ * returns url of image stored in metabox
  * args: post_id
  */
 function sfiGetImage( $post_id ){
